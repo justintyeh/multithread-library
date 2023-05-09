@@ -1,0 +1,7 @@
+# Target library
+lib := libuthread.a
+
+all: $(lib)
+
+## TODO: Phase 1
+ar rcs lib queue.c
