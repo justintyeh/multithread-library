@@ -43,10 +43,11 @@ struct uthread_tcb *uthread_current(void)
 
 void uthread_yield(void)
 {
-  // change current thread from RUNNING -> READY
+  // change current thread from RUNNING -> READY and add to queue
   struct uthread_tcb *prev_thread = uthread_current();
   if (prev_thread->state == RUNNING){
     prev_thread->state = READY;
+    queue_enqueue(q, prev_thread);
   }
   
   // get the next thread from queue and change status to RUNNING
@@ -56,17 +57,9 @@ void uthread_yield(void)
   initial_thread = next_thread;
   next_thread->state = RUNNING;
 
-  // put previous thread back into queue
-  if (prev_thread->state == READY){
-    queue_enqueue(q, prev_thread);
-  }
-
   // context switch previous thread and next thread
   uthread_ctx_switch(prev_thread->context, next_thread->context);
-
-
-  
-  
+    
 }
 
 void uthread_exit(void)
@@ -107,18 +100,27 @@ int uthread_create(uthread_func_t func, void *arg)
 int uthread_run(bool preempt, uthread_func_t func, void *arg)
 {
 	/* TODO Phase 2 */
+  // skip preempt for now
 
-  
   q = queue_create();
   
   // initialize new thread
-  struct uthread_tcb* new_thread = malloc(sizeof(struct uthread_tcb));
+  struct uthread_tcb *new_thread = malloc(sizeof(struct uthread_tcb));
   new_thread->context = malloc(sizeof(ucontext_t));
 
-  // initialize with initial 
+  // idle thread will now be running
   new_thread->state = RUNNING;
   initial_thread = new_thread;
   idle_thread = new_thread;
+
+
+  uthread_create(func, arg); // returns -1 if failed
+  // if queue is empty run the idle thread
+  while (queue_length > 0){
+    uthread_yield();
+    
+  }
+
   
     
   return 0;
