@@ -45,33 +45,22 @@ void uthread_yield(void)
 {
   // change current thread from RUNNING -> READY and add to queue
   struct uthread_tcb *prev_thread = uthread_current();
-  printf("p = %p\n", prev_thread);
   if (prev_thread->state == RUNNING){
     prev_thread->state = READY;
   }
 
   // get the next thread from queue and change status to RUNNING
   struct uthread_tcb *next_thread;
-  printf("dbg deq\n");
   queue_dequeue(q, (void*)&next_thread);
-  printf("dbg state access prior\n");
   next_thread->state = RUNNING;
-  printf("dbg state access post\n");
 
   // keep track of new initial thread
   initial_thread = next_thread;
-  printf("init\n");
 
-  printf("pstate = %d\n", prev_thread->state);
-  
   if (prev_thread->state == READY) {
-    printf("cond enter\n");
     queue_enqueue(q, prev_thread);
-    printf("cond post\n");
   }
   
-  printf("prev_thread ctx = %p\n", prev_thread->context);
-  printf("nxt_thread ctx = %p\n", next_thread->context);
   // this is seg faulting
   // context switch previous thread and next thread
   uthread_ctx_switch(prev_thread->context, next_thread->context);

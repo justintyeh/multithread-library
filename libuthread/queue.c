@@ -79,7 +79,6 @@ int queue_enqueue(queue_t queue, void *data)
         queue->tail = new_node;
     }
     queue->length++;
-    printf("enq success\n");
     return 0; /*SUCESS enqueuing*/
 }
 
@@ -107,7 +106,6 @@ int queue_dequeue(queue_t queue, void **data)
     
     free(previousNode);
     queue->length--;
-    printf("deq success\n");
     return 0;
 }
 
