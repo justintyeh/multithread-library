@@ -60,6 +60,8 @@ void uthread_yield(void)
   if (prev_thread->state == READY) {
     queue_enqueue(q, prev_thread);
   }
+
+  printf("prev state = %d\n nxt state = %d\n", prev_thread->state, next_thread->state);
   
   // this is seg faulting
   // context switch previous thread and next thread
