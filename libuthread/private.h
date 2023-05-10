@@ -1,6 +1,8 @@
 #ifndef _UTHREAD_PRIVATE_H
 #define _UTHREAD_PRIVATE_H
 
+#define _XOPEN_SOURCE 600
+
 /*
  * This header is only meant to be included by files from the libuthread, as it
  * defines some private APIs usable internally. This header is not to be

@@ -19,7 +19,7 @@ enum states{
   READY = 0,
   BLOCKED = -1,
   ZOMBIE = -2
-}
+};
 
 // thread specific information
 struct uthread_tcb {
@@ -50,14 +50,14 @@ void uthread_yield(void)
   }
   
   // get the next thread from queue and change status to RUNNING
-  struct uthread_tcb next_thread;
+  struct uthread_tcb *next_thread;
   queue_dequeue(q, (void*)&next_thread);
 
   initial_thread = next_thread;
   next_thread->state = RUNNING;
 
   // put previous thread back into queue
-  if (prev_thread->state = READY){
+  if (prev_thread->state == READY){
     queue_enqueue(q, prev_thread);
   }
 
@@ -87,7 +87,7 @@ int uthread_create(uthread_func_t func, void *arg)
 {
 	/* TODO Phase 2 */
   // create new thread
-  struct uthread_tcb new_thread = malloc(sizeof(struct uthread_tcb));
+  struct uthread_tcb *new_thread = malloc(sizeof(struct uthread_tcb));
   new_thread->context = malloc(sizeof(ucontext_t));
 
   // set state to READY
@@ -98,6 +98,7 @@ int uthread_create(uthread_func_t func, void *arg)
 
   // add thread to queue
   queue_enqueue(q, new_thread);
+  return 0;
 }
 
 int uthread_run(bool preempt, uthread_func_t func, void *arg)
