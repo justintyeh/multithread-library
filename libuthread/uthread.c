@@ -72,11 +72,12 @@ void uthread_yield(void)
 void uthread_exit(void)
 {
 	/* TODO Phase 2 */
+  struct uthread_tcb *t = initial_thread;
   // exit the thread so change to ZOMBIE state
-  initial_thread->state = ZOMBIE;
+  t->state = ZOMBIE;
   // free context(registers) and stack pointer
-  free(initial_thread->context);
-  free(initial_thread->SP);
+  free(t->context);
+  free(t->SP);
 
   // stop running this thread
   uthread_yield();
