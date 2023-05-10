@@ -76,9 +76,6 @@ void uthread_exit(void)
 	/* TODO Phase 2 */
     // exit the thread so change to ZOMBIE state
   initial_thread->state = ZOMBIE;
-  // free context(registers) and stack pointer
-  free(initial_thread->context);
-  free(initial_thread->SP);
   
   // stop running this thread
   uthread_yield();
@@ -131,6 +128,11 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
   while (queue_length > 0){
     uthread_yield();
   }
+
+  // free the memory of initial thread bc they are done running
+  free(initial_thread->context);
+  free(initial_thread->SP);
+  
   return 0;
 }
 
