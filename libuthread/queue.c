@@ -79,6 +79,7 @@ int queue_enqueue(queue_t queue, void *data)
         queue->tail = new_node;
     }
     queue->length++;
+    printf("enq success\n");
     return 0; /*SUCESS enqueuing*/
 }
 
@@ -88,6 +89,7 @@ int queue_dequeue(queue_t queue, void **data)
     if (queue->head == NULL||queue == NULL || data == NULL || queue->length == 0)
     {
         /*ERROR queue/data is NULL or queue is empty*/
+      printf("failed to deq\n");
         return -1;
     }
 
@@ -105,7 +107,7 @@ int queue_dequeue(queue_t queue, void **data)
     
     free(previousNode);
     queue->length--;
-
+    printf("deq success\n");
     return 0;
 }
 

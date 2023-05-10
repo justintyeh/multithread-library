@@ -45,18 +45,34 @@ void uthread_yield(void)
 {
   // change current thread from RUNNING -> READY and add to queue
   struct uthread_tcb *prev_thread = uthread_current();
+  printf("p = %p\n", prev_thread);
   if (prev_thread->state == RUNNING){
     prev_thread->state = READY;
-    queue_enqueue(q, prev_thread);
   }
-  
+
   // get the next thread from queue and change status to RUNNING
   struct uthread_tcb *next_thread;
+  printf("dbg deq\n");
   queue_dequeue(q, (void*)&next_thread);
-
-  initial_thread = next_thread;
+  printf("dbg state access prior\n");
   next_thread->state = RUNNING;
+  printf("dbg state access post\n");
 
+  // keep track of new initial thread
+  initial_thread = next_thread;
+  printf("init\n");
+
+  printf("pstate = %d\n", prev_thread->state);
+  
+  if (prev_thread->state == READY) {
+    printf("cond enter\n");
+    queue_enqueue(q, prev_thread);
+    printf("cond post\n");
+  }
+  
+  printf("prev_thread ctx = %p\n", prev_thread->context);
+  printf("nxt_thread ctx = %p\n", next_thread->context);
+  // this is seg faulting
   // context switch previous thread and next thread
   uthread_ctx_switch(prev_thread->context, next_thread->context);
     
@@ -114,25 +130,26 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
   idle_thread = new_thread;
 
 
-  uthread_create(func, arg); // returns -1 if failed
+  int x = uthread_create(func, arg); // returns -1 if failed
+  printf("func run = %d\n", x);
   // if queue is empty run the idle thread
-  while (queue_length > 0){
+  if (queue_length > 0){
     uthread_yield();
-    
   }
-
-  
-    
   return 0;
 }
 
 void uthread_block(void)
 {
 	/* TODO Phase 3 */
-
+  struct uthread_tcb *current = uthread_current();
+  current->state = BLOCKED;
+  uthread_yield();
 }
 
 void uthread_unblock(struct uthread_tcb *uthread)
 {
 	/* TODO Phase 3 */
+  uthread->state = READY;
+  queue_enqueue(q, uthread);
 }
