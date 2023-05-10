@@ -108,7 +108,8 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
 {
 	/* TODO Phase 2 */
   // skip preempt for now
-
+  if (preempt)
+  
   //printf("run\n");
   q = queue_create();
   
@@ -125,7 +126,7 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
   uthread_create(func, arg); // returns -1 if failed
 
   // keep yielding current thread until you reach the idle thread 
-  while (queue_length > 0){
+  while (queue_length(q) > 0){
     uthread_yield();
   }
 
