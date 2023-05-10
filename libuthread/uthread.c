@@ -37,12 +37,14 @@ struct uthread_tcb *initial_thread;
 struct uthread_tcb *uthread_current(void)
 {
 	/* TODO Phase 2/3 */
+  printf("return curr thread\n");
   return initial_thread;
   
 }
 
 void uthread_yield(void)
 {
+  printf("yield\n");
   // change current thread from RUNNING -> READY and add to queue
   struct uthread_tcb *prev_thread = uthread_current();
   if (prev_thread->state == RUNNING){
@@ -72,13 +74,12 @@ void uthread_yield(void)
 void uthread_exit(void)
 {
 	/* TODO Phase 2 */
-  struct uthread_tcb *t = initial_thread;
-  // exit the thread so change to ZOMBIE state
-  t->state = ZOMBIE;
+    // exit the thread so change to ZOMBIE state
+  initial_thread->state = ZOMBIE;
   // free context(registers) and stack pointer
-  free(t->context);
-  free(t->SP);
-
+  //free(t->context);
+  //free(t->SP);
+  printf("whats wrong exit\n");
   // stop running this thread
   uthread_yield();
   
@@ -87,6 +88,7 @@ void uthread_exit(void)
 int uthread_create(uthread_func_t func, void *arg)
 {
 	/* TODO Phase 2 */
+  printf("create\n");
   // create new thread
   struct uthread_tcb *new_thread = malloc(sizeof(struct uthread_tcb));
   new_thread->context = malloc(sizeof(ucontext_t));
@@ -110,6 +112,7 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
 	/* TODO Phase 2 */
   // skip preempt for now
 
+  printf("run\n");
   q = queue_create();
   
   // initialize new thread
