@@ -132,6 +132,10 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
   // free the memory of initial thread bc they are done running
   free(initial_thread->context);
   free(initial_thread->SP);
+
+  // no need to free idle thread bc we need it to run
+  // and the program will finish running when idle thread is done
+  // which will automatically free the memory
   
   return 0;
 }
