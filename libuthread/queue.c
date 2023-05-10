@@ -88,8 +88,8 @@ int queue_dequeue(queue_t queue, void **data)
     if (queue->head == NULL||queue == NULL || data == NULL || queue->length == 0)
     {
         /*ERROR queue/data is NULL or queue is empty*/
-      printf("failed to deq\n");
-        return -1;
+      //printf("failed to deq\n");
+      return -1;
     }
 
     // have to dereference ptr bc you pass in an address
