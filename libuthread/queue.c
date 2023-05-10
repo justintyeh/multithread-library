@@ -46,6 +46,7 @@ int queue_destroy(queue_t queue)
         /*ERROR: queue is NULL or queue's not empty*/
         return -1;
     }
+    printf("dbg\n");
     // DO WE HAVE TO DEALLOCATE NODES HERE?
     free(queue);
     return 0;

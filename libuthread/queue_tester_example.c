@@ -1,4 +1,3 @@
-
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -102,7 +101,22 @@ void delete(void){
 
   TEST_ASSERT(0 == x);
 
+  TEST_ASSERT(-1 == queue_destroy(q));
+
+  int *p1, *p2, *p3;
+  queue_dequeue(q, (void**)&p1);
+  //  queue_dequeue(q,(void**)&p2);
+  // queue_dequeue(q,(void**)&p3);
+  TEST_ASSERT(0 == queue_length(q));
 }
+
+// enqueue NULL item and see if function returns proper error code
+// delete item that does not exist
+//
+
+/* void errors(void){ */
+  
+/* } */
 
 int main(void)
 {

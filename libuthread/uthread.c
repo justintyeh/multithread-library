@@ -96,6 +96,9 @@ int uthread_create(uthread_func_t func, void *arg)
   // allocate stack with function
   new_thread->SP = uthread_ctx_alloc_stack();
 
+  // initialize context
+  uthread_ctx_init(new_thread->context, new_thread->SP, func, arg);
+
   // add thread to queue
   queue_enqueue(q, new_thread);
   return 0;
@@ -124,10 +127,10 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
 void uthread_block(void)
 {
 	/* TODO Phase 3 */
+
 }
 
 void uthread_unblock(struct uthread_tcb *uthread)
 {
 	/* TODO Phase 3 */
 }
-
