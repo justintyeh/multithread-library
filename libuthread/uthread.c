@@ -83,7 +83,13 @@ int uthread_create(uthread_func_t func, void *arg)
   //printf("create\n");
   // create new thread
   struct uthread_tcb *new_thread = malloc(sizeof(struct uthread_tcb));
+  if (new_thread == NULL) {
+    return -1;
+  }
   new_thread->context = malloc(sizeof(ucontext_t));
+  if (new_thread->context == NULL){
+    return -1;
+  }
 
   // set state to READY
   new_thread->state = READY;
@@ -103,8 +109,6 @@ int uthread_create(uthread_func_t func, void *arg)
 int uthread_run(bool preempt, uthread_func_t func, void *arg)
 {
 	/* TODO Phase 2 */
-  //printf("run\n");
-  // skip preempt for now
   if (preempt){
     preempt_start(preempt);
   }
@@ -115,15 +119,22 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
   
   // initialize new thread
   struct uthread_tcb *new_thread = malloc(sizeof(struct uthread_tcb));
+  if (new_thread == NULL){
+    return -1;
+  }
   new_thread->context = malloc(sizeof(ucontext_t));
-
+  if (new_thread->context == NULL){
+    return -1;
+  }
   // idle thread will now be running
   new_thread->state = RUNNING;
   initial_thread = new_thread;
   idle_thread = new_thread;
 
 
-  uthread_create(func, arg); // returns -1 if failed
+  if (uthread_create(func, arg) == -1){
+    return -1;
+  } // returns -1 if failed
 
   // keep yielding current thread until you reach the idle thread 
   while (queue_length(q) > 0){
@@ -149,7 +160,6 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
 void uthread_block(void)
 {
 	/* TODO Phase 3 */
-  //printf("block\n");
   struct uthread_tcb *current = uthread_current();
   current->state = BLOCKED;
   uthread_yield();
