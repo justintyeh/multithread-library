@@ -1,4 +1,4 @@
-#include <stddef.h>
+1#include <stddef.h>
 #include <stdlib.h>
 
 #include "queue.h"
@@ -87,12 +87,12 @@ int sem_up(sem_t sem) //post
     return 1;
   }
   
-  sem->count = sem->count++;
-  //if (sem->count == 0 && queue_length(sem->wait_list) > 0){
+
+  if (sem->count == 0 && queue_length(sem->wait_list) > 0){
     struct uthread_tcb *next_thread;
     queue_dequeue(sem->wait_list, (void*)&next_thread);
     uthread_unblock(next_thread);
-    // }
+  }
+  sem->count = sem->count++;
   return 0;
 }
-
