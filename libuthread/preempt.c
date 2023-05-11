@@ -18,6 +18,7 @@
 //global access for new action and old action
 struct sigaction new_action, old_action;
 struct itimerval new_timer, old_timer;
+sigset_t ss;
 
 void signal_handler(int signum){
   printf("SIGVT RECEIVED!\n");
@@ -27,13 +28,18 @@ void signal_handler(int signum){
 void preempt_disable(void)
 {
 	/* TODO Phase 4 */
-  // disable preemption
+  // disable preemption so block the signals
+  sigemptyset(&ss);
+  sigaddset(&ss, SIGVTALRM);
+  sigprocmask(SIG_BLOCK, &ss, NULL);
 }
 
 void preempt_enable(void)
 {
 	/* TODO Phase 4 */
-  // enable preemption
+  // enable preemption so unblock the signals
+  sigemptyset(&ss);                                                        sigaddset(&ss, SIGVTALRM);                                               sigprocmask(SIG_UNBLOCK, &ss, NULL);
+  
 }
 
 // 100 Hz set up is adapted from https://www.ibm.com/docs/en/i/7.2?topic=ssw_ibm_i_72/apis/setitime.html
