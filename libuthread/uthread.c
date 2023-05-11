@@ -49,6 +49,7 @@ void uthread_yield(void)
   struct uthread_tcb *prev_thread = uthread_current();
   if (prev_thread->state == RUNNING){
     prev_thread->state = READY;
+    queue_enqueue(q, prev_thread);
   }
 
   // get the next thread from queue and change status to RUNNING
@@ -58,10 +59,6 @@ void uthread_yield(void)
 
   // keep track of new initial thread
   initial_thread = next_thread;
-
-  if (prev_thread->state == READY) {
-    queue_enqueue(q, prev_thread);
-  }
 
   // context switch previous thread and next thread
   uthread_ctx_switch(prev_thread->context, next_thread->context); 
@@ -107,7 +104,7 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
 	/* TODO Phase 2 */
   // skip preempt for now
   if (preempt){
-    sleep(0);
+    ;
   }
     
   //printf("run\n");
