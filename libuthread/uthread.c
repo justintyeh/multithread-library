@@ -106,8 +106,10 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
 {
 	/* TODO Phase 2 */
   // skip preempt for now
-  if (preempt)
-    ;
+  if (preempt){
+    int i = 0;
+  }
+    
   //printf("run\n");
   q = queue_create();
   
