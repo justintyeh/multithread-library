@@ -20,4 +20,4 @@ uthread.o: uthread.c uthread.h context.c preempt.c private.h
 	gcc -Wall -Werror -Wextra -c -o uthread.o uthread.c context.o
 
 clean:
-	rm -f uthread.o queue.o libuthread.a
+	rm -f uthread.o queue.o libuthread.a context.o preempt.o

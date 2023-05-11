@@ -63,9 +63,6 @@ void uthread_yield(void)
     queue_enqueue(q, prev_thread);
   }
 
-  //printf("prev state = %d\n nxt state = %d\n", prev_thread->state, next_thread->state);
-  
-  // this is seg faulting
   // context switch previous thread and next thread
   uthread_ctx_switch(prev_thread->context, next_thread->context); 
     
@@ -96,6 +93,7 @@ int uthread_create(uthread_func_t func, void *arg)
   // allocate stack with function
   new_thread->SP = uthread_ctx_alloc_stack();
 
+
   // initialize context
   uthread_ctx_init(new_thread->context, new_thread->SP, func, arg); // -1 if fails
 
@@ -109,7 +107,7 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
 	/* TODO Phase 2 */
   // skip preempt for now
   if (preempt)
-  
+    ;
   //printf("run\n");
   q = queue_create();
   

@@ -30,6 +30,7 @@ queue_t queue_create(void)
     if (new_queue == NULL)
     {
         /*ERROR: failure when allocating*/
+      printf("failed allocating\n");
         return NULL;
     }
     new_queue->length = 0;
