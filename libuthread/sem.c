@@ -18,6 +18,7 @@ sem_t sem_create(size_t count)
   // on heap
 
   sem_t sem = malloc(sizeof(struct semaphore));
+  sem->wait_list = malloc(sizeof(queue_t));
   sem->wait_list = create_queue();
   if (sem == NULL){
     return NULL;
@@ -62,7 +63,7 @@ int sem_down(sem_t sem) // also known as wait() or P()
   // add to wait list then block
   if (sem->count == 0){
     struct uthread_tcb *current_thread = uthread_current();
-    queue_enqueue(sem->wait_list, current_thread());
+    queue_enqueue(sem->wait_list, current_thread);
     uthread_block();
   }
 
@@ -90,7 +91,7 @@ int sem_up(sem_t sem) //post
   
   sem->count = sem->count++;
   struct uthread_tcb *next_thread;
-  queue_dequeue(sem->waitlist, (void*)&next_thread);
+  queue_dequeue(sem->wait_list, (void*)&next_thread);
   uthread_unblock(next_thread);
   return 0;
 }
