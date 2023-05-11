@@ -21,7 +21,7 @@ sem_t sem_create(size_t count)
   if (sem == NULL){
     return NULL;
   }
-  sem->wait_list = create_queue();
+  sem->wait_list = queue_create();
   sem->count = count;
   return sem;
 
