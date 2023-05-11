@@ -22,12 +22,12 @@ sigset_t ss;
 
 void signal_handler(int signum){
   printf("SIGVT RECEIVED!\n");
-  uthread_yield(uthread_current());
+  uthread_yield();
 }
 
 void preempt_disable(void)
 {
-	/* TODO Phase 4 */
+  /* TODO Phase 4 */
   // disable preemption so block the signals
   sigemptyset(&ss);
   sigaddset(&ss, SIGVTALRM);
@@ -36,10 +36,11 @@ void preempt_disable(void)
 
 void preempt_enable(void)
 {
-	/* TODO Phase 4 */
+  /* TODO Phase 4 */
   // enable preemption so unblock the signals
-  sigemptyset(&ss);                                                        sigaddset(&ss, SIGVTALRM);                                               sigprocmask(SIG_UNBLOCK, &ss, NULL);
-  
+  sigemptyset(&ss);
+  sigaddset(&ss, SIGVTALRM);
+  sigprocmask(SIG_UNBLOCK, &ss, NULL);
 }
 
 // 100 Hz set up is adapted from https://www.ibm.com/docs/en/i/7.2?topic=ssw_ibm_i_72/apis/setitime.html
