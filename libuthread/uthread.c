@@ -106,8 +106,9 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
   //printf("run\n");
   // skip preempt for now
   if (preempt){
-    ;
+    preempt_start(preempt);
   }
+
     
   //printf("run\n");
   q = queue_create();

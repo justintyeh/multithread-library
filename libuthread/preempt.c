@@ -68,7 +68,6 @@ void preempt_start(bool preempt)
     //start preemption
     // configure a timer that must fire a virutal alarm w/ freq 100Hz
     // set up timer handler that forcefully yields currently running thread
-    
     new_action.sa_handler = signal_handler;
     sigemptyset (&new_action.sa_mask);
     new_action.sa_flags = 0;
