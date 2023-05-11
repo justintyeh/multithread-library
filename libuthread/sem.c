@@ -88,11 +88,11 @@ int sem_up(sem_t sem) //post
   }
   
   sem->count = sem->count++;
-  if (sem->count == 0 && queue_length(sem->wait_list) > 0){
+  //if (sem->count == 0 && queue_length(sem->wait_list) > 0){
     struct uthread_tcb *next_thread;
     queue_dequeue(sem->wait_list, (void*)&next_thread);
     uthread_unblock(next_thread);
-  }
+    // }
   return 0;
 }
 
