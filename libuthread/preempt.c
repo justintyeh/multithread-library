@@ -30,6 +30,18 @@ void preempt_enable(void)
 void preempt_start(bool preempt)
 {
 	/* TODO Phase 4 */
+  // 1. install a signal handler that receives alarm signals (SIGVTALRM)
+  // 2. config timer which will fire alrm (SIGVTALRM) 100 times per sec (100Hz))
+
+  // SIGVTALRM - this signal typically inidcates expiration of a timer that measures
+  // CPU time used by current proc. aka virtual alarm time
+
+  // signal handler, which acts as the timer interrupt handler, will force current
+  // running thread to yield
+
+  // if preemption enabled, stop should be called before uthread_run returns,
+  // once the multithreading phase returns
+  // It should restore prev signal action, and restore prev timer configuration
   if (preempt){
     //start preemption
     // configure a timer that must fire a virutal alarm w/ freq 100Hz
