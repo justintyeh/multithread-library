@@ -39,7 +39,7 @@ int sem_destroy(sem_t sem)
     return -1;
   }
 
-  free(sem->wait_list);
+  queue_destroy(sem->wait_list);
   free(sem);
 
   return 0;
@@ -60,14 +60,13 @@ int sem_down(sem_t sem) // also known as wait() or P()
 
   // add to wait list then block
   if (sem->count == 0){
-    struct uthread_tcb *current_thread = uthread_current();
-    queue_enqueue(sem->wait_list, current_thread);
+    queue_enqueue(sem->wait_list, uthread_current());
     uthread_block();
   }
 
   // decrement count
   if (sem->count > 0){
-    sem->count = sem->count--;
+    sem->count--;
   }
 
   return 0;
@@ -82,17 +81,17 @@ int sem_up(sem_t sem) //post
   // release sem
   // if waiting list associated with sem not empty, releasing rsrc cause
   // 1st thread (ie oldest) in waiting list to be unblocked
-  // return 1 if sem null; 0 if successful release
+  // return -1 if sem null; 0 if successful release
   if (sem == NULL){
-    return 1;
+    return -1;
   }
   
+  sem->count++;
 
-  if (sem->count == 0 && queue_length(sem->wait_list) > 0){
+  if (queue_length(sem->wait_list) > 0){
     struct uthread_tcb *next_thread;
     queue_dequeue(sem->wait_list, (void*)&next_thread);
     uthread_unblock(next_thread);
   }
-  sem->count = sem->count++;
   return 0;
 }

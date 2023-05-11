@@ -67,7 +67,8 @@ void uthread_yield(void)
 
 void uthread_exit(void)
 {
-	/* TODO Phase 2 */
+  /* TODO Phase 2 */
+  //printf("exit\n");
     // exit the thread so change to ZOMBIE state
   initial_thread->state = ZOMBIE;
   
@@ -102,6 +103,7 @@ int uthread_create(uthread_func_t func, void *arg)
 int uthread_run(bool preempt, uthread_func_t func, void *arg)
 {
 	/* TODO Phase 2 */
+  //printf("run\n");
   // skip preempt for now
   if (preempt){
     ;
@@ -141,6 +143,7 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
 void uthread_block(void)
 {
 	/* TODO Phase 3 */
+  //printf("block\n");
   struct uthread_tcb *current = uthread_current();
   current->state = BLOCKED;
   uthread_yield();
@@ -149,6 +152,7 @@ void uthread_block(void)
 void uthread_unblock(struct uthread_tcb *uthread)
 {
 	/* TODO Phase 3 */
+  //printf("unblock\n");
   uthread->state = READY;
   queue_enqueue(q, uthread);
 }
