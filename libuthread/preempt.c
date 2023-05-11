@@ -85,6 +85,7 @@ void preempt_start(bool preempt)
     new_timer.it_interval.tv_usec = 10000; // 10 ms
     setitimer(ITIMER_VIRTUAL, &new_timer, NULL);
   // if preempt false then all other function should be ineffective
+  }
 }
 
 void preempt_stop(void)
