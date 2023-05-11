@@ -136,6 +136,11 @@ int uthread_run(bool preempt, uthread_func_t func, void *arg)
   // no need to free idle thread bc we need it to run
   // and the program will finish running when idle thread is done
   // which will automatically free the memory
+
+  // If preemption was enabled, the function preempt_stop() should be called before uthread_run() returns, once the multithreading phase of the application ends. It should restore the previous signal action, and restore the previous timer configuration.
+  if (preempt){
+    preempt_stop();
+  }
   
   return 0;
 }
