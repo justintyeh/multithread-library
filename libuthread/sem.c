@@ -18,12 +18,10 @@ sem_t sem_create(size_t count)
   // on heap
 
   sem_t sem = malloc(sizeof(struct semaphore));
-  sem->wait_list = malloc(sizeof(queue_t));
-  sem->wait_list = create_queue();
   if (sem == NULL){
     return NULL;
   }
-  
+  sem->wait_list = create_queue();
   sem->count = count;
   return sem;
 
