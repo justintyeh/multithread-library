@@ -131,7 +131,8 @@ Now that  "set" == 1, thread1 can break out of the while loop and print out
 The order of statements printed out will then be...
 thread1, thread2, thread3, finished thread2, finished thread1
 
-`Conclusion`: This testing program is effective to test whether or not our 
+### Conclusion
+This testing program is effective to test whether or not our 
 preempt functionality was properly implemented becaue without preemption 
 working, we would never be able to ensure that we'd get the printed out states,
 ents in that exact order. In fact, thread1 will be stuck in the while loop 
