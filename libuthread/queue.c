@@ -11,27 +11,20 @@ typedef struct Node
     struct Node *next;
 } Node;
 
-// create new node
-
 struct queue
 {
-    /* TODO Phase 1 */
-    /* didn't typedef cause it was professor's starter code */
     Node *head;
     Node *tail;
     int length;
 };
-/* Note: queue_t = pointer to struct queue */
 
 queue_t queue_create(void)
 {
-    /* TODO Phase 1 */
     queue_t new_queue = malloc(sizeof(struct queue));
     if (new_queue == NULL)
     {
-        /*ERROR: failure when allocating*/
-      printf("failed allocating\n");
-        return NULL;
+      /*ERROR: failure when allocating*/
+      return NULL;
     }
     new_queue->length = 0;
     new_queue->head = NULL;
@@ -48,21 +41,19 @@ int queue_destroy(queue_t queue)
         return -1;
     }
 
-    // DO WE HAVE TO DEALLOCATE NODES HERE?
     free(queue);
     return 0;
 }
 
 int queue_enqueue(queue_t queue, void *data)
 {
-    /* TODO Phase 1 */
     Node *new_node = malloc(sizeof(Node));
     if (queue == NULL || data == NULL || new_node == NULL)
     {
         /*ERROR: queue or data is NULL pointer or memory allocation failed*/
         return -1;
     }
-    new_node->data = data; // Have to ask TA just to be sure...
+    new_node->data = data;
     new_node->next = NULL;
     /*
     Two scenerios:
@@ -85,16 +76,14 @@ int queue_enqueue(queue_t queue, void *data)
 
 int queue_dequeue(queue_t queue, void **data)
 {
-    /* TODO Phase 1 */
     if (queue->head == NULL||queue == NULL || data == NULL || queue->length == 0)
     {
-        /*ERROR queue/data is NULL or queue is empty*/
-      //printf("failed to deq\n");
+      /*ERROR queue/data is NULL or queue is empty*/
       return -1;
     }
 
     // have to dereference ptr bc you pass in an address
-    *data = queue->head->data; /*why does it have to be void**?*/
+    *data = queue->head->data;
     /*Dequeue the oldest node*/
     Node *previousNode = queue->head;
     queue->head = queue->head->next;
@@ -104,7 +93,8 @@ int queue_dequeue(queue_t queue, void **data)
     {
       queue->tail = NULL;
     }
-    
+
+    // release node and decrement length
     free(previousNode);
     queue->length--;
     return 0;
@@ -112,7 +102,6 @@ int queue_dequeue(queue_t queue, void **data)
 
 int queue_delete(queue_t queue, void *data)
 {
-    /* TODO Phase 1 */
     if (queue == NULL || data == NULL)
         return -1;
     Node *currNode = queue->head;
@@ -138,12 +127,10 @@ int queue_delete(queue_t queue, void *data)
 // void (*queue_func_t)(queue_t queue, void *data)
 int queue_iterate(queue_t queue, queue_func_t func)
 {
-    /* TODO Phase 1 */
     if (queue == NULL || func == NULL)
     {
         return -1;
     }
-    /* The resulting values should be stored in the queue? */
     Node *currNode = queue->head;
     for (; currNode->next != NULL; currNode = currNode->next)
     {
@@ -154,6 +141,5 @@ int queue_iterate(queue_t queue, queue_func_t func)
 
 int queue_length(queue_t queue)
 {
-    /* TODO Phase 1 */
     return queue->length;
 }
