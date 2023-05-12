@@ -27,7 +27,7 @@ void signal_handler(int signum) {
     printf("SIGVT RECEIVED!\n");
     uthread_yield();
 }
-void hell(int a) { printf("A"); }
+
 void preempt_disable(void) {
     // disable preemption so block the signals
     if (enable) {
