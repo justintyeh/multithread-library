@@ -17,7 +17,6 @@
 
  // global access for new action and old action
 struct sigaction new_action, old_action;
-struct itimerval new_timer, old_timer;
 sigset_t ss;
 bool enable;
 
@@ -71,6 +70,7 @@ void preempt_start(bool preempt) {
         // the first timer interrupt. If zero, the alarm is disabled.
 
         // configure alarm to fire signal 100Hz (100 times per sec)
+        struct itimerval new_timer;
         new_timer.it_value.tv_sec = 0; // set initial time to 0 sec
 
         // bc we want 100 times per sec
