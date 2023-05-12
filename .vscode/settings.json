@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "uthread.h": "c",
+        "queue.h": "c",
+        "stdio.h": "c"
+    },
+    "[c]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools",
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true
+    }
+}
