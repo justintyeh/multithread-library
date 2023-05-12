@@ -103,7 +103,7 @@ void delete(void){
 
   TEST_ASSERT(-1 == queue_destroy(q));
 
-  int *p1, *p2, *p3;
+  int *p1; //, *p2, *p3;
   queue_dequeue(q, (void**)&p1);
   //  queue_dequeue(q,(void**)&p2);
   // queue_dequeue(q,(void**)&p3);
